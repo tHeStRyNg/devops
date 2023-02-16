@@ -1,8 +1,5 @@
 FROM python:3.10.8-alpine
-RUN apk update && apk add zlib-dev py3-psutil && apk add --no-cache build-base
-RUN apk add bzip2-dev
-RUN apk add xz-dev
-RUN apk add cargo
+RUN apk update && apk add zlib-dev linux-headers py3-psutil bzip2-dev xz-dev cargo && apk add --no-cache build-base
 WORKDIR /app
 COPY app .
 RUN pip install --upgrade pip && pip install -r requirements.txt
