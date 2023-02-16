@@ -1,4 +1,4 @@
-# DevOps-Assignment
+ # DevOps-Assignment
 
 This DevOps Assignment represents exactly the type of tasks which you might have to do as a DevOps Engineer at SmartCow. In this repo, you will find a simple Python - Flask Web App, which reads the current RAM and CPU usage and a React frontend which shows the statistics in the browser.
 
