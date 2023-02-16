@@ -1,6 +1,6 @@
 FROM node:14-alpine
 WORKDIR /app
-COPY package*.json ./
+COPY sys-stats .
 RUN npm install
 COPY . .
 RUN npm run build
