@@ -2,6 +2,7 @@ FROM python:3.8-alpine
 RUN apk update && apk add zlib-dev && apk add --no-cache build-base
 RUN apk add bzip2-dev
 RUN apk add xz-dev
+RUN apk add rust
 WORKDIR /usr/src/app
 COPY app.py requirements.txt .
 RUN pip install -r requirements.txt
