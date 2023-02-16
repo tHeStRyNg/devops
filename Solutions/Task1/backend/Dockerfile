@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM python:3.10.8-alpine
 RUN apk update && apk add zlib-dev && apk add --no-cache build-base
 RUN apk add bzip2-dev
 RUN apk add xz-dev
