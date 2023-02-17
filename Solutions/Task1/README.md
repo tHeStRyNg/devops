@@ -51,9 +51,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
 ```
 and the requirements dependencies:
+
 ```
 # Python PIP requirements:
-```
 psutil==5.9.4
 Flask==2.2.2
 Flask-Cors==3.0.10
