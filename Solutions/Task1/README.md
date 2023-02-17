@@ -168,10 +168,11 @@ We've successfully dockerized this application and below you can find the build 
 ![execution](https://user-images.githubusercontent.com/118682909/219665523-6862ca0c-e64c-419b-90fb-7ad80da84f1d.png)
 
 ## How to deploy
-- install docker
-- install docker-compose
-- make usre firewalls ports are open for 80, 3000 and 5000
-- git pull this repo
-- go to Task1 root folder and ```docker-compose up --build ```
+this was done with a Ubuntu 18 LTS and Docker-ce with Compose 
+- Install docker
+- Install docker-compose
+- Make sure firewalls ports are open inbound for 80, 3000 and 5000 so pay attention if you need to rectify firewall rules (ufw allow 30, 3000, 5000)
+- Git pull this repo
+- Go to Task1 root folder and ```docker-compose up --build ```
 
 This will spin the 3 containers up then open your browser http://<REMOTE/LOCAL IP> and you will be able to see the react logo as mentioned above on Conllusion step 3.
