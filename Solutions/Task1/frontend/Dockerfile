@@ -1,4 +1,4 @@
-FROM node:17-alpine
+FROM node:14.18.1-alpine
 WORKDIR /app
 COPY sys-stats .
 RUN npm install
