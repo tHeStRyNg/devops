@@ -1,6 +1,6 @@
 # Documentation for Task1
 
-## Requirements
+## Requirements (based on https://github.com/tHeStRyNg/devops/tree/master/DevOps-Assignment)
 ## Task 1 - Dockerize the Application
 
 The first task is to dockerise this application - as part of this task you will have to get the application to work with Docker and Docker Compose. 
@@ -121,7 +121,7 @@ server {
 
 ```
 
-As oyu can see we are serving on port 80 of nginx service the content of Node frontend from 3000 with this one liner:
+As you can see we are serving on port 80 of nginx service the content of Node frontend from 3000 with this one liner:
 ```
    proxy_pass http://frontend:3000;
 
@@ -167,7 +167,7 @@ We've successfully dockerized this application and below you can find the build 
 ### 3 - Run
 ![execution](https://user-images.githubusercontent.com/118682909/219665523-6862ca0c-e64c-419b-90fb-7ad80da84f1d.png)
 
-## How to deploy
+## How to Deploy
 this was done with a Ubuntu 18 LTS and Docker-ce with Compose and git
 - Install docker ``` apt install docker-ce ```
 - Install docker-compose ``` curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose $$ chmod +x /usr/local/bin/docker-compose ```
@@ -175,4 +175,4 @@ this was done with a Ubuntu 18 LTS and Docker-ce with Compose and git
 - Git pull this repo ``` git pull https://github.com/tHeStRyNg/devops.git ```
 - Go to devops/Solutions/Task1 folder and exec the following ```docker-compose up --build ```
 
-This will spin the 3 containers up then open your browser http://<REMOTE/LOCAL IP> and you will be able to see the react logo as mentioned above on Conllusion step 3.
+This will spin the 3 containers up then open your browser http://<REMOTE/LOCAL IP> and you will be able to see the react logo as mentioned above on Conclusion step 3.
