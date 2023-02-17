@@ -168,10 +168,10 @@ We've successfully dockerized this application and below you can find the build 
 ![execution](https://user-images.githubusercontent.com/118682909/219665523-6862ca0c-e64c-419b-90fb-7ad80da84f1d.png)
 
 ## How to deploy
-1 - install docker
-2 - install docker-compose
-3 - make usre firewalls ports are open for 80, 3000 and 5000
-4 - git pull this repo
-5 - go to Task1 root folder and ```docker-compose up --build ```
+- install docker
+- install docker-compose
+- make usre firewalls ports are open for 80, 3000 and 5000
+- git pull this repo
+- go to Task1 root folder and ```docker-compose up --build ```
 
 This will spin the 3 containers up then open your browser http://<REMOTE/LOCAL IP> and you will be able to see the react logo as mentioned above on Conllusion step 3.
