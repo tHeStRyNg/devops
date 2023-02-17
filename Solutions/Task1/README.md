@@ -168,11 +168,11 @@ We've successfully dockerized this application and below you can find the build 
 ![execution](https://user-images.githubusercontent.com/118682909/219665523-6862ca0c-e64c-419b-90fb-7ad80da84f1d.png)
 
 ## How to deploy
-this was done with a Ubuntu 18 LTS and Docker-ce with Compose 
-- Install docker
-- Install docker-compose
-- Make sure firewalls ports are open inbound for 80, 3000 and 5000 so pay attention if you need to rectify firewall rules (ufw allow 30, 3000, 5000)
-- Git pull this repo
-- Go to Task1 root folder and ```docker-compose up --build ```
+this was done with a Ubuntu 18 LTS and Docker-ce with Compose and git
+- Install docker ``` apt install docker-ce ```
+- Install docker-compose ``` curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose $$ chmod +x /usr/local/bin/docker-compose ```
+- Make sure firewalls ports are open inbound for 80, 3000 and 5000 so pay attention if you need to rectify firewall rules ```ufw allow 30, 3000, 5000```
+- Git pull this repo ``` git pull https://github.com/tHeStRyNg/devops.git ```
+- Go to devops/Solutions/Task1 folder and exec the following ```docker-compose up --build ```
 
 This will spin the 3 containers up then open your browser http://<REMOTE/LOCAL IP> and you will be able to see the react logo as mentioned above on Conllusion step 3.
