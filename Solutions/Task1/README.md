@@ -138,9 +138,10 @@ services:
 We've successfully dockerized this application and below you can find the build start and execution results
 
 ### Build
-
+![build](https://user-images.githubusercontent.com/118682909/219665465-92bd2234-d5c9-41c3-a71b-69a76f0ccb96.png)
 
 ### Start
-
+![start](https://user-images.githubusercontent.com/118682909/219665493-e305ad19-1ad8-4fd8-9c72-ec662b741cf2.png)
 
 ### Run
+![execution](https://user-images.githubusercontent.com/118682909/219665523-6862ca0c-e64c-419b-90fb-7ad80da84f1d.png)
