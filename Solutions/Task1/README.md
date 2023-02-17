@@ -3,21 +3,21 @@
 ## Requirements (based on https://github.com/tHeStRyNg/devops/tree/master/DevOps-Assignment)
 ## Task 1 - Dockerize the Application
 
-The first task is to dockerise this application - as part of this task you will have to get the application to work with Docker and Docker Compose. - DONE
-You are expected to get this app to work with UWSGI or Gunicorn and serve the react frontend through Nginx. - DONE
+The first task is to dockerise this application - as part of this task you will have to get the application to work with Docker and Docker Compose. - **DONE**
+You are expected to get this app to work with UWSGI or Gunicorn and serve the react frontend through Nginx. - **DONE**
 
-The React container should also perform `npm build` every time it is built. - DONE
+The React container should also perform `npm build` every time it is built. - **DONE**
 
-Hint/Optional - Create 3 separate containers. 1 for the backend, 2nd for the proxy and 3rd for the react frontend. - DONE
+Hint/Optional - Create 3 separate containers. 1 for the backend, 2nd for the proxy and 3rd for the react frontend. - **DONE**
 
-It is expected that you create another small document/walkthrough or readme which helps us understand your thinking process behind all of the decisions you made. - DONE
+It is expected that you create another small document/walkthrough or readme which helps us understand your thinking process behind all of the decisions you made. - **DONE**
 
-The only strict requirement is that the application should spin up with `docker-compose up --build` command. - DONE
+The only strict requirement is that the application should spin up with `docker-compose up --build` command. - **DONE**
 
 You will be evaluated based on the
-* best practices - DONE
-* ease of use - DONE
-* quality of the documentation provided with the code - DONE
+* best practices - **DONE**
+* ease of use - **DONE**
+* quality of the documentation provided with the code - **DONE**
 
 
 ## Solution
