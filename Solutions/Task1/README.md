@@ -2,7 +2,7 @@
 
 So to Dockerize a Python backend and React frontend, consider creating a Dockerfile for each component and a docker-compose file to orchestrate the containers.
 
-BreakDown Structure of the project:
+BreakDown Structure of the Backend, Frontend and NGinx containers:
 
 ```
 ├── Task1
@@ -40,7 +40,9 @@ BreakDown Structure of the project:
 │   └── README.md
 ```
 
-To achieve the above we started by creating the Dockerfile for the Python backend with the following logic and mapping the missing requirements:
+##  Backend Container
+To achieve the above we started by creating the Dockerfile for the Python backend with the following logic and mapping the missing requirements adding gunicorn running on port 5000 as requested.
+This uses psutils mainly to gather system stats (CPU and RAM) in a very fast way.
 
 ```
 # Dockerfile
@@ -61,3 +63,84 @@ jsonify==0.5
 gunicorn==20.1.0
 meinheld==1.0.2
 ```
+
+##  Frontend Container
+The Frontend Container is based on NPM so we used alpine node 14:18-1 lts and just set it to npm start on port 3000 as follows below.
+Important to denote that this service provides the "UI" or the "look and Feel" to display the stats being gathered from the backend node on port 5000.
+
+```
+FROM node:14.18.1-alpine
+WORKDIR /app
+COPY sys-stats .
+RUN npm install
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+##  NGinx Container
+
+The NGinx container is the one that will be serving requests from port 80 proxying reverse to port 3000 of the frontend.
+With this scope in mind i've just created a nginx defaults config file and setup the proxy reverse config to server from the frontend or node server and being created using docker compose on image nginx:latest as follows.
+
+
+```
+server {
+  listen 80;
+  server_name localhost;
+
+  location / {
+    proxy_pass http://frontend:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+}
+
+```
+
+As oyu can see we are serving on port 80 of nginx service the content of Node frontend from 3000 with this one liner:
+```
+   proxy_pass http://frontend:3000;
+
+```
+
+# Docker Compose Container Orchestration
+
+To tie all these togheter we used, as requested, docker-compose for the orchestration of all 3 container created above (backend, backend, nginx).
+Also we have created a dependency on nginx to start dependant on the frontend which its suposed to serve.
+
+```
+version: '3'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+  frontend:
+    build: ./frontend
+    command: npm start
+    ports:
+      - "3000:3000"
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+```
+
+## Conclusion
+We've successfully dockerized this application and below you can find the build start and execution results
+
+### Build
+
+
+### Start
+
+
+### Run
