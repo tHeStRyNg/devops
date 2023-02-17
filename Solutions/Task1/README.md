@@ -1,5 +1,26 @@
 # Documentation for Task1
 
+## Requirements
+## Task 1 - Dockerize the Application
+
+The first task is to dockerise this application - as part of this task you will have to get the application to work with Docker and Docker Compose. 
+You are expected to get this app to work with UWSGI or Gunicorn and serve the react frontend through Nginx. 
+
+The React container should also perform `npm build` every time it is built.
+
+Hint/Optional - Create 3 separate containers. 1 for the backend, 2nd for the proxy and 3rd for the react frontend.
+
+It is expected that you create another small document/walkthrough or readme which helps us understand your thinking process behind all of the decisions you made. 
+
+The only strict requirement is that the application should spin up with `docker-compose up --build` command. 
+
+You will be evaluated based on the
+* best practices 
+* ease of use
+* quality of the documentation provided with the code
+
+
+## Solution
 So to Dockerize a Python backend and React frontend, consider creating a Dockerfile for each component and a docker-compose file to orchestrate the containers.
 
 BreakDown Structure of the Backend, Frontend and NGinx containers:
@@ -137,11 +158,20 @@ services:
 ## Conclusion
 We've successfully dockerized this application and below you can find the build start and execution results
 
-### Build
+### 1 - Build
 ![build](https://user-images.githubusercontent.com/118682909/219665465-92bd2234-d5c9-41c3-a71b-69a76f0ccb96.png)
 
-### Start
+### 2 - Start
 ![start](https://user-images.githubusercontent.com/118682909/219665493-e305ad19-1ad8-4fd8-9c72-ec662b741cf2.png)
 
-### Run
+### 3 - Run
 ![execution](https://user-images.githubusercontent.com/118682909/219665523-6862ca0c-e64c-419b-90fb-7ad80da84f1d.png)
+
+## How to deploy
+1 - install docker
+2 - install docker-compose
+3 - make usre firewalls ports are open for 80, 3000 and 5000
+4 - git pull this repo
+5 - go to Task1 root folder and ```docker-compose up --build ```
+
+This will spin the 3 containers up then open your browser http://<REMOTE/LOCAL IP> and you will be able to see the react logo as mentioned above on Conllusion step 3.
