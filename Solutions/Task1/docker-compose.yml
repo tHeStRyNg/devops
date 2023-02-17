@@ -7,7 +7,7 @@ services:
       - "5000:5000"
   frontend:
     build: ./frontend
-    command: serve -s build
+    command: npm start
     ports:
       - "3000:3000"
   nginx:
