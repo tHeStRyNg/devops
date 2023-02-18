@@ -6,6 +6,8 @@
 - Add all the deployments, services and volume (if any) yaml files in the repo.
 - The only hard-requirement is to get the app to work with `minikube`
 
+
+## Pre-Requirements
 ### Environment Setup
  So we setup a Cloud Instance with the following specs:
 - OS - Ubuntu 18.04 LTS x64 (Long Term Support)
@@ -54,7 +56,7 @@ kubectl version -o json
 minikube start --force
 ```
 
-### Initial Code Creation
+## Initial Code Creation
 
 To deploy the Python backend and React frontend as separate pods on Kubernetes, and expose them over port 80 using a loadbalancer, we will use the following Kubernetes configuration:
 
