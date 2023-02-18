@@ -1,7 +1,5 @@
-# Documentation for Task1
-
-## Requirements (based on https://github.com/tHeStRyNg/devops/tree/master/DevOps-Assignment)
-## Task 1 - Dockerize the Application
+### Requirements Definition for Task 1
+### Task 1 - Dockerize the Application
 
 The first task is to dockerise this application - as part of this task you will have to get the application to work with Docker and Docker Compose. - **DONE**
 You are expected to get this app to work with UWSGI or Gunicorn and serve the react frontend through Nginx. - **DONE**
@@ -20,7 +18,7 @@ You will be evaluated based on the
 * quality of the documentation provided with the code - **DONE**
 
 
-## Solution
+### Solution
 So to Dockerize a Python backend and React frontend, consider creating a Dockerfile for each component and a docker-compose file to orchestrate the containers.
 
 BreakDown Structure of the Backend, Frontend and NGinx containers:
@@ -61,7 +59,7 @@ BreakDown Structure of the Backend, Frontend and NGinx containers:
 │   └── README.md
 ```
 
-##  Backend Container
+###  Backend Container
 To achieve the above we started by creating the Dockerfile for the Python backend with the following logic and mapping the missing requirements adding gunicorn running on port 5000 as requested.
 This uses psutils mainly to gather system stats (CPU and RAM) in a very fast way.
 
@@ -85,7 +83,7 @@ gunicorn==20.1.0
 meinheld==1.0.2
 ```
 
-##  Frontend Container
+###  Frontend Container
 The Frontend Container is based on NPM so we used alpine node 14:18-1 lts and just set it to npm start on port 3000 as follows below.
 Important to denote that this service provides the "UI" or the "look and Feel" to display the stats being gathered from the backend node on port 5000.
 
@@ -100,7 +98,7 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-##  NGinx Container
+###  NGINX Container
 
 The NGinx container is the one that will be serving requests from port 80 proxying reverse to port 3000 of the frontend.
 With this scope in mind i've just created a nginx defaults config file and setup the proxy reverse config to server from the frontend or node server and being created using docker compose on image nginx:latest as follows.
@@ -127,7 +125,7 @@ As you can see we are serving on port 80 of nginx service the content of Node fr
 
 ```
 
-# Docker Compose Container Orchestration
+### Docker Compose Container Orchestration
 
 To tie all these togheter we used, as requested, docker-compose for the orchestration of all 3 container created above (backend, backend, nginx).
 Also we have created a dependency on nginx to start dependant on the frontend which its suposed to serve.
@@ -155,19 +153,19 @@ services:
       - frontend
 ```
 
-## Conclusion
+### Conclusion
 We've successfully dockerized this application and below you can find the build start and execution results
 
-### 1 - Build
+#### 1 - Build
 ![build](https://user-images.githubusercontent.com/118682909/219665465-92bd2234-d5c9-41c3-a71b-69a76f0ccb96.png)
 
-### 2 - Start
+#### 2 - Start
 ![start](https://user-images.githubusercontent.com/118682909/219665493-e305ad19-1ad8-4fd8-9c72-ec662b741cf2.png)
 
-### 3 - Run
+#### 3 - Run
 ![execution](https://user-images.githubusercontent.com/118682909/219665523-6862ca0c-e64c-419b-90fb-7ad80da84f1d.png)
 
-## How to Deploy
+### How to Deploy
 this was done with a Ubuntu 18 LTS and Docker-ce with Compose and git
 - Install docker ``` apt install docker-ce ```
 - Install docker-compose ``` curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose $$ chmod +x /usr/local/bin/docker-compose ```
