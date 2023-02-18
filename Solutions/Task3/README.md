@@ -241,6 +241,18 @@ data:
 ```
 This configuration defines a ConfigMap for Nginx, with a custom default.conf file defining the Nginx configuration for the frontend and the backend.
 
+### Kubernetes minikube cmds that might be useful
+Before applying the above configuration make sure minikube is ready to create loads and all is operational
+
+```
+kubectl version -o json
+kubectl config view
+kubectl cluster-info
+kubectl get nodes
+kubectl get pod
+kubectl get nodes
+```
+
 ### Apply all the above Configurations
 Finally, we apply all the configurations using the following commands:
 
@@ -256,3 +268,28 @@ kubectl apply -f nginx-config.yaml
 This will deploy the backend, frontend, and Nginx pods, as well as the corresponding services and the Nginx ConfigMap. 
 The frontend and backend pods will communicate through the backend service, and the Nginx pods will load balance traffic between the frontend and backend pods over port 80. 
 The final app will be exposed over port 80 to the end user.
+
+### Summary - Conclusion
+
+We check existing nodes running and if minikube was accessible as follows:
+
+```
+
+~# kubectl get nodes
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   20h   v1.26.1
+
+~# kubectl get pod
+No resources found in default namespace.
+
+~# kubectl get nodes
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   20h   v1.26.1
+
+```
+
+And then we apply the configuration we did in the created order.
+
+```
+
+```
