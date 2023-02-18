@@ -41,4 +41,112 @@ kubectl version -o json
 minikube start --force
 ```
 
-###
+### Initial Code Creation
+
+To deploy the Python backend and React frontend as separate pods on Kubernetes, and expose them over port 80 using a loadbalancer, we will use the following Kubernetes configuration:
+
+### Backend Deployment Config
+
+First, we create a file backend-deployment.yaml with the following content:
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: app
+        image: <backend-image>
+        command: ["gunicorn", "app:app", "--bind", "0.0.0.0:8000", "--workers", "4", "--worker-class", "gevent", "--log-level", "info"]
+        ports:
+        - containerPort: 8000
+
+```
+
+We will replace <backend-image> with the name of our backend Docker image from Task1.
+
+### Frontend Deployment Config
+
+First, we create a file frontend-deployment.yaml with the following content:
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: app
+        image: <frontend-image>
+        command: ["npm", "start"]
+        env:
+        - name: REACT_APP_API_URL
+          value: "http://backend:8000"
+        ports:
+        - containerPort: 3000
+
+```
+
+Like Before, we will replace <frontend-image> with the name of our previously created frontend Docker image from Task1.
+This configuration defines a deployment for the frontend, with two replicas, and a container running npm to serve the React application on port 3000.
+
+### LoadBalancer Deployment Config
+
+Next, create a file nginx-deployment.yaml with the following content:
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+
+```
+This configuration defines a deployment for Nginx, with one replica, and a container running the Nginx image from Docker Hub, serving traffic on port 80.
+
