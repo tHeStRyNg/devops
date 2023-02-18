@@ -6,14 +6,20 @@
 We decided that we will deploy the Python backend and React frontend on AWS EKS.
 To deploy the docker-compose file we created on task 1 on AWS EKS, we would need to do the following steps:
 
+### Kubernetes AWS EKS - Pre Requirements
+
 1 - Create an EKS cluster using the AWS Management Console or the AWS CLI.
 
 2 - Install and configure the AWS CLI on our local machine.
 
 3 - Create an Amazon ECR repository and push the Docker images for the backend and frontend services to the repository.
 
+
+### Kubernetes AWS EKS - Deployment File
+
 4 - Create a Kubernetes deployment file, which describes how the Docker containers should be deployed in the EKS cluster. 
 This is its deployment file:
+
 
 ```
 apiVersion: apps/v1
@@ -57,8 +63,9 @@ spec:
 
 Note that you will need to replace ```<your-ecr-repo>``` with the name of your ECR repository and ```<your-ecr-registry-creds>``` with the name of your ECR registry credentials.
 
+### Kubernetes AWS EKS - Service File
 5 - Create a Kubernetes service file, which exposes the backend and frontend containers to the internet.
-This is the service file
+This is the service file:
 
 ```
 apiVersion: v1
@@ -81,6 +88,8 @@ spec:
       targetPort: 80
 ```
 
+### Kubernetes AWS EKS - Apply Deployment and Service config Files
+
 6 - Apply the deployment and service files to the EKS cluster using the ```kubectl apply``` command:
 
 ```
@@ -88,12 +97,18 @@ kubectl apply -f <path-to-deployment-file>
 kubectl apply -f <path-to-service-file>
 ```
 
-7 - Wait for the LoadBalancer service to be created. You can check the status of the service using the kubectl get service command:
+### Kubernetes AWS EKS - LoadBalancer
+
+7 - Wait for the LoadBalancer service to be created. You can check the status of the service using the ```kubectl get service``` command:
 
 ```
 kubectl get service my-app
 ```
 
+### Kubernetes AWS EKS - Access the url from LoadBalancer
+
 8 - Access your application using the external IP address of the LoadBalancer service, which you can find using the ```kubectl get service``` command.
+
+### Kubernetes AWS EKS - Completed
 
 That's it! The application is now running on AWS EKS.
