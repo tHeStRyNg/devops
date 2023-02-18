@@ -352,7 +352,7 @@ PS --> we could also use curl to test the port (we'll skip).
  
  Your default defined browser will open pn http://localhost:80 and the following is displayed.
 
-![execution](https://user-images.githubusercontent.com/118682909/219866401-bd1529eb-69eb-4668-ace2-4adadf7c8e6a.png)
+![minikube_running](https://user-images.githubusercontent.com/118682909/219867865-8847c40f-1240-4cfa-86e0-d44378652957.PNG)
 
 ### Conclusion
 Done application running with 2 backend replicas, 2 frontend replicas and 1 loadbalancer on Kubernetes Minikube.
