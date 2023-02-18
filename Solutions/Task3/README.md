@@ -349,6 +349,8 @@ So for this VSC "hack" we will check the port 80 with a reverse port forward usi
 PS --> we could also use curl to test the port (we'll skip).
  
 ![vcs](https://user-images.githubusercontent.com/118682909/219866362-c6ebaa27-dfdf-46d8-8536-df0da48b6bc8.PNG)
+ 
+ Your default defined browser will open pn http://localhost:80 and the following is displayed.
 
 ![execution](https://user-images.githubusercontent.com/118682909/219866401-bd1529eb-69eb-4668-ace2-4adadf7c8e6a.png)
 
