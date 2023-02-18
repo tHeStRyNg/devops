@@ -345,7 +345,9 @@ We could expose the nginx service port using NodePort as follows but instead wel
 kubectl expose deployment nginx --type=NodePort
 ```
 
-So for this VSC "hack" we will check the port 80 with a reverse port forward using Terminal Ports on VSC as follows or we could also use curl to test the port (we'll skip).
+So for this VSC "hack" we will check the port 80 with a reverse port forward using Terminal Ports on VSC as follows below.
+PS --> we could also use curl to test the port (we'll skip).
+![vcs](https://user-images.githubusercontent.com/118682909/219866362-c6ebaa27-dfdf-46d8-8536-df0da48b6bc8.PNG)
 
-
+### Conclusion
 Done application running with 2 backend replicas, 2 frontend replicas and 1 loadbalancer on Kubernetes Minikube.
