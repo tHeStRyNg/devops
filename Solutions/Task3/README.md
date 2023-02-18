@@ -1,4 +1,4 @@
-# Documentation for Task 3
+# Requirements Documentation for Task 3
 ## Task 3 - Get it to work with Kubernetes (minikube)
 
 - Next step is completely separate from step 2. Go back to the application you built in Stage 1 and get it to work with Kubernetes.
@@ -12,6 +12,19 @@
 -- 12 vCPUs, 24576.00 MB RAM, 500 GB NVMe Storage
 - Docker
 - Kubernetes - minikube
+
+### Architecture Logic Behind the below code
+
+The architecture consists of three Kubernetes deployments, each running as a separate pod.
+- Python Backend Deployment: This deployment is responsible for running the Python backend code as a pod. It exposes its functionality over port 8000.
+- React Frontend Deployment: This deployment is responsible for running the React frontend code as a pod. It exposes its functionality over port 3000.
+- Nginx Deployment: This deployment is responsible for running the Nginx web server as a pod. It is configured to load balance traffic between the backend and frontend pods. It exposes its functionality over port 80.
+
+In addition to the three deployments, there are three Kubernetes services that enable communication between the pods.
+- Backend Service: This service allows the frontend pod to communicate with the backend pod over port 8000.
+- Frontend Service: This service allows the Nginx pod to communicate with the frontend pod over port 3000.
+- Nginx Service: This service is responsible for exposing the Nginx pod over port 80 to the outside world.
+Finally, there is a Kubernetes ConfigMap that defines the Nginx configuration for serving the frontend and proxying requests to the backend. The ConfigMap is mounted as a volume in the Nginx pod and used to configure the Nginx web server.
 
 ### Kubernetes Minikube and Kubectl Setup
 
@@ -115,7 +128,7 @@ This configuration defines a deployment for the frontend, with two replicas, and
 
 ### LoadBalancer Deployment Config
 
-Next, create a file nginx-deployment.yaml with the following content:
+Next, we create a file nginx-deployment.yaml with the following content:
 
 ```
 apiVersion: apps/v1
@@ -150,3 +163,94 @@ spec:
 ```
 This configuration defines a deployment for Nginx, with one replica, and a container running the Nginx image from Docker Hub, serving traffic on port 80.
 
+### NGINX Service Configuration
+
+Next, we create a file nginx-service.yaml with the following content:
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  selector:
+    app: backend
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+
+```
+
+This configuration defines a service for the backend deployment, allowing it to be accessed by other pods in the cluster.
+
+### Frontend Service Configuration
+Next, we create a file named frontend-service.yaml with the following content:
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+```
+This configuration defines a service for the frontend deployment, allowing it to be accessed by other pods in the cluster.
+
+
+### NGINX Configuration
+Next, we create a file named nginx-config.yaml with the following content:
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+        listen       80;
+        server_name  localhost;
+
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+            try_files $uri /index.html;
+        }
+
+        location /api/ {
+            proxy_pass         http://backend:8000/;
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+            proxy_set_header   X-Real-IP $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host $server_name;
+        }
+    }
+```
+This configuration defines a ConfigMap for Nginx, with a custom default.conf file defining the Nginx configuration for the frontend and the backend.
+
+### Apply all the above Configurations
+Finally, we apply all the configurations using the following commands:
+
+```
+kubectl apply -f backend-deployment.yaml
+kubectl apply -f backend-service.yaml
+kubectl apply -f frontend-deployment.yaml
+kubectl apply -f frontend-service.yaml
+kubectl apply -f nginx-deployment.yaml
+kubectl apply -f nginx-service.yaml
+kubectl apply -f nginx-config.yaml
+```
+This will deploy the backend, frontend, and Nginx pods, as well as the corresponding services and the Nginx ConfigMap. 
+The frontend and backend pods will communicate through the backend service, and the Nginx pods will load balance traffic between the frontend and backend pods over port 80. 
+The final app will be exposed over port 80 to the end user.
