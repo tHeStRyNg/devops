@@ -28,6 +28,9 @@ In addition to the three deployments, there are three Kubernetes services that e
 - Nginx Service: This service is responsible for exposing the Nginx pod over port 80 to the outside world.
 Finally, there is a Kubernetes ConfigMap that defines the Nginx configuration for serving the frontend and proxying requests to the backend. The ConfigMap is mounted as a volume in the Nginx pod and used to configure the Nginx web server.
 
+Note:
+The Docker and Kubernetes Registry configuration which holds the containers/pods images used in this example is not part of this exercise.
+
 ### Kubernetes Minikube and Kubectl Setup
 
 So we install Kubernetes minikube as follows below. 
@@ -53,7 +56,9 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s http
 chmod +x ./kubectl
 mv ./kubectl /usr/local/bin/kubectl
 kubectl version -o json
-minikube start --force
+minikube start --driver=docker --force
+eval $(minikube docker-env)
+minikube start --vm-driver="virtualbox" --insecure-registry="$REG_IP":80
 ```
 
 ## Initial Code Creation
@@ -250,7 +255,9 @@ kubectl config view
 kubectl cluster-info
 kubectl get nodes
 kubectl get pod
-kubectl get nodes
+kubectl get svc
+kubectl get deployments
+minikube ip
 ```
 
 ### Apply all the above Configurations
@@ -274,7 +281,6 @@ The final app will be exposed over port 80 to the end user.
 We check existing nodes running and if minikube was accessible as follows:
 
 ```
-
 ~# kubectl get nodes
 NAME       STATUS   ROLES           AGE   VERSION
 minikube   Ready    control-plane   20h   v1.26.1
@@ -282,14 +288,64 @@ minikube   Ready    control-plane   20h   v1.26.1
 ~# kubectl get pod
 No resources found in default namespace.
 
-~# kubectl get nodes
-NAME       STATUS   ROLES           AGE   VERSION
-minikube   Ready    control-plane   20h   v1.26.1
+~:/opt/git/devops/Solutions/Task3# kubectl get svc
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   6s
 
+~:/opt/git/devops/Solutions/Task3# kubectl get deploy
+No resources found in default namespace.
 ```
 
-And then we apply the configuration we did in the created order.
+And then we apply the configuration we did as follows.
 
 ```
+$:/opt/git/devops/Solutions/Task3# kubectl apply -f backend-service.yaml
+service/backend created
+
+$:/opt/git/devops/Solutions/Task3# kubectl apply -f frontend-deployment.yaml
+deployment.apps/frontend created
+
+$:/opt/git/devops/Solutions/Task3# kubectl apply -f frontend-service.yaml
+service/frontend created
+
+$:/opt/git/devops/Solutions/Task3# kubectl apply -f nginx-deployment.yaml
+deployment.apps/nginx created
+
+$:/opt/git/devops/Solutions/Task3# kubectl apply -f nginx-service.yaml
+service/nginx created
+
+$:/opt/git/devops/Solutions/Task3# kubectl apply -f nginx-config.yaml
+configmap/nginx-config created
+
+$:/opt/git/devops/Solutions/Task3# kubectl get svc
+NAME         TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+backend      ClusterIP      10.106.31.59     <none>        8000/TCP       7s
+frontend     ClusterIP      10.99.51.119     <none>        3000/TCP       6s
+kubernetes   ClusterIP      10.96.0.1        <none>        443/TCP        91s
+nginx        LoadBalancer   10.104.111.180   <pending>     80:30723/TCP   6s
+
+$:/opt/git/devops/Solutions/Task3# kubectl get deploy
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE
+backend    1/2     2            1           14s
+frontend   1/2     2            1           14s
+nginx      1/1     1            1           13s
+
+$:/opt/git/devops/Solutions/Task3# kubectl get pod
+NAME                        READY   STATUS           RESTARTS   AGE
+backend-58495b5747-pktkr    1/1     Running             0       19s
+backend-58495b5747-sm2cx    1/1     Running             0       19s
+frontend-7db7b9b495-g5b98   1/1     Running             0       19s
+frontend-7db7b9b495-mmsrq   1/1     Running             0       19s
+nginx-54d8fc87b9-bssnz      1/1     Running             0       18s
 
 ```
+We could expose the nginx service port using NodePort as follows but instead well "hack it"... so this is just info content.
+
+```
+kubectl expose deployment nginx --type=NodePort
+```
+
+So for this VSC "hack" we will check the port 80 with a reverse port forward using Terminal Ports on VSC as follows or we could also use curl to test the port (we'll skip).
+
+
+Done application running with 2 backend replicas, 2 frontend replicas and 1 loadbalancer on Kubernetes Minikube.
